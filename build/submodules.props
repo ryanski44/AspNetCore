@@ -49,7 +49,6 @@
     <ShippedRepository Include="AADIntegration" RootPath="$(RepositoryRoot)src\AADIntegration\" />
     <ShippedRepository Include="AzureIntegration" RootPath="$(RepositoryRoot)src\AzureIntegration\" />
     <ShippedRepository Include="EntityFrameworkCore" />
-    <ShippedRepository Include="Identity" RootPath="$(RepositoryRoot)src\Identity\" />
     <ShippedRepository Include="JavaScriptServices" RootPath="$(RepositoryRoot)src\JavaScriptServices\" />
     <ShippedRepository Include="JsonPatch" />
     <ShippedRepository Include="Mvc" RootPath="$(RepositoryRoot)src\Mvc\" />

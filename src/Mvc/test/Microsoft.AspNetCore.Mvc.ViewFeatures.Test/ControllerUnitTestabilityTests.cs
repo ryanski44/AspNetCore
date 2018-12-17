@@ -189,57 +189,6 @@ namespace Microsoft.AspNetCore.Mvc
         }
 
         [Fact]
-        public void ControllerJson_InvokedInUnitTests()
-        {
-            // Arrange
-            var controller = new TestabilityController();
-            var model = new MyModel() { Property1 = "Property_1" };
-
-            // Act
-            var result = controller.Json_Action(model);
-
-            // Assert
-            Assert.NotNull(result);
-
-            var jsonResult = Assert.IsType<JsonResult>(result);
-            Assert.NotNull(jsonResult.Value);
-            Assert.Same(model, jsonResult.Value);
-            Assert.IsType<MyModel>(jsonResult.Value);
-
-            // Arrange
-            controller = new TestabilityController();
-
-            // Act
-            result = controller.Json_Action(null);
-
-            // Assert
-            Assert.NotNull(result);
-
-            jsonResult = Assert.IsType<JsonResult>(result);
-            Assert.Null(jsonResult.Value);
-        }
-
-        [Fact]
-        public void ControllerJsonWithSerializerSettings_InvokedInUnitTests()
-        {
-            // Arrange
-            var controller = new TestabilityController();
-            var model = new MyModel() { Property1 = "Property_1" };
-            var serializerSettings = new JsonSerializerSettings();
-
-            // Act
-            var result = controller.JsonWithSerializerSettings_Action(model, serializerSettings);
-
-            // Assert
-            Assert.NotNull(result);
-
-            var jsonResult = Assert.IsType<JsonResult>(result);
-            Assert.NotNull(jsonResult.Value);
-            Assert.Same(model, jsonResult.Value);
-            Assert.IsType<MyModel>(jsonResult.Value);
-        }
-
-        [Fact]
         public void ControllerHttpNotFound_InvokedInUnitTests()
         {
             // Arrange
@@ -738,16 +687,6 @@ namespace Microsoft.AspNetCore.Mvc
             {
                 var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(content));
                 return File(memoryStream, contentType, fileName);
-            }
-
-            public IActionResult Json_Action(object data)
-            {
-                return Json(data);
-            }
-
-            public IActionResult JsonWithSerializerSettings_Action(object data, JsonSerializerSettings serializerSettings)
-            {
-                return Json(data, serializerSettings);
             }
 
             public IActionResult Redirect_Action(string url)

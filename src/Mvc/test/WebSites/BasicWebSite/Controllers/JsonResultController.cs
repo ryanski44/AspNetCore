@@ -20,7 +20,7 @@ namespace BasicWebSite.Controllers
 
         public JsonResult Plain()
         {
-            return Json(new { Message = "hello" });
+            return new JsonResult(new { Message = "hello" });
         }
 
         public JsonResult CustomContentType()
@@ -32,17 +32,17 @@ namespace BasicWebSite.Controllers
 
         public JsonResult CustomSerializerSettings()
         {
-            return Json(new { Message = "hello" }, _customSerializerSettings);
+            return new JsonResult(new { Message = "hello" }, _customSerializerSettings);
         }
 
         public JsonResult Null()
         {
-            return Json(null);
+            return new JsonResult(null);
         }
 
         public JsonResult String()
         {
-            return Json("hello");
+            return new JsonResult("hello");
         }
     }
 }

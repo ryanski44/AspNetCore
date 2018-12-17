@@ -68,5 +68,34 @@
     "TypeId": "public class Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor : Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor, Microsoft.AspNetCore.Mvc.Infrastructure.IActionResultExecutor<Microsoft.AspNetCore.Mvc.ViewResult>",
     "MemberId": "public .ctor(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcViewOptions> viewOptions, Microsoft.AspNetCore.Mvc.Infrastructure.IHttpResponseStreamWriterFactory writerFactory, Microsoft.AspNetCore.Mvc.ViewEngines.ICompositeViewEngine viewEngine, Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataDictionaryFactory tempDataFactory, System.Diagnostics.DiagnosticSource diagnosticSource, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory, Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider modelMetadataProvider)",
     "Kind": "Removal"
+  },
+  {
+    "TypeId": "public class Microsoft.AspNetCore.Mvc.ViewFeatures.JsonHelper : Microsoft.AspNetCore.Mvc.Rendering.IJsonHelper",
+    "Kind": "Removal"
+  },
+  {
+    "TypeId": "public interface Microsoft.AspNetCore.Mvc.Rendering.IJsonHelper",
+    "MemberId": "Microsoft.AspNetCore.Html.IHtmlContent Serialize(System.Object value, Newtonsoft.Json.JsonSerializerSettings serializerSettings)",
+    "Kind": "Removal"
+  },
+  {
+    "TypeId": "public class Microsoft.AspNetCore.Mvc.ViewFeatures.SessionStateTempDataProvider : Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider",
+    "MemberId": "public .ctor()",
+    "Kind": "Removal"
+  },
+  {
+    "TypeId": "public class Microsoft.AspNetCore.Mvc.ViewFeatures.CookieTempDataProvider : Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider",
+    "MemberId": "public .ctor(Microsoft.AspNetCore.DataProtection.IDataProtectionProvider dataProtectionProvider, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions> options)",
+    "Kind": "Removal"
+  },
+  {
+    "TypeId": "public abstract class Microsoft.AspNetCore.Mvc.Controller : Microsoft.AspNetCore.Mvc.ControllerBase, Microsoft.AspNetCore.Mvc.Filters.IActionFilter, Microsoft.AspNetCore.Mvc.Filters.IAsyncActionFilter, System.IDisposable",
+    "MemberId": "public virtual Microsoft.AspNetCore.Mvc.JsonResult Json(System.Object data)",
+    "Kind": "Removal"
+  },
+  {
+    "TypeId": "public abstract class Microsoft.AspNetCore.Mvc.Controller : Microsoft.AspNetCore.Mvc.ControllerBase, Microsoft.AspNetCore.Mvc.Filters.IActionFilter, Microsoft.AspNetCore.Mvc.Filters.IAsyncActionFilter, System.IDisposable",
+    "MemberId": "public virtual Microsoft.AspNetCore.Mvc.JsonResult Json(System.Object data, Newtonsoft.Json.JsonSerializerSettings serializerSettings)",
+    "Kind": "Removal"
   }
 ]

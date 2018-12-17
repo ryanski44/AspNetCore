@@ -10,12 +10,12 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 
-namespace Microsoft.AspNetCore.Mvc.ViewFeatures
+namespace Microsoft.AspNetCore.Mvc.NewtonsoftJson
 {
     /// <summary>
-    /// Default implementation of <see cref="IJsonHelper"/>.
+    /// Newtonsoft.Json based implementation of <see cref="IJsonHelper"/>.
     /// </summary>
-    public class JsonHelper : IJsonHelper
+    internal class JsonHelper : IJsonHelper
     {
         private readonly JsonOutputFormatter _jsonOutputFormatter;
         private readonly ArrayPool<char> _charPool;

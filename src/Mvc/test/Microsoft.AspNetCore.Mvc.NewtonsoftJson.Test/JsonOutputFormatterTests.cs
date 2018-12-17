@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Testing;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Primitives;
@@ -403,7 +402,7 @@ namespace Microsoft.AspNetCore.Mvc.Formatters
         {
             // Arrange
             var formatter = new JsonOutputFormatter(new JsonSerializerSettings(), ArrayPool<char>.Shared);
-            
+
             var body = new MemoryStream();
             var actionContext = GetActionContext(MediaTypeHeaderValue.Parse(mediaType), body);
             var outputFormatterContext = new OutputFormatterWriteContext(

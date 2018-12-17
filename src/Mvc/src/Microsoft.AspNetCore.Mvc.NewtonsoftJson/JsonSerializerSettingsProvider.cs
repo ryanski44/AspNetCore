@@ -12,6 +12,9 @@ namespace Microsoft.AspNetCore.Mvc.Formatters
     public static class JsonSerializerSettingsProvider
     {
         private const int DefaultMaxDepth = 32;
+        private static readonly ProblemDetailsConverter ProblemDetailsConverter = new ProblemDetailsConverter();
+        private static readonly ValidationProblemDetailsConverter ValidationProblemDetailsConverter = new ValidationProblemDetailsConverter();
+
 
         // return shared resolver by default for perf so slow reflection logic is cached once
         // developers can set their own resolver after the settings are returned if desired
@@ -41,6 +44,12 @@ namespace Microsoft.AspNetCore.Mvc.Formatters
                 // Do not change this setting
                 // Setting this to None prevents Json.NET from loading malicious, unsafe, or security-sensitive types
                 TypeNameHandling = TypeNameHandling.None,
+
+                Converters =
+                {
+                    ValidationProblemDetailsConverter,
+                    ProblemDetailsConverter,
+                }
             };
         }
 

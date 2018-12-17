@@ -29,6 +29,7 @@ namespace Microsoft.AspNetCore.Mvc.IntegrationTest
             AddHostingServices(serviceCollection);
             serviceCollection
                 .AddMvc()
+                .AddNewtonsoftJsonFormatters()
                 .AddXmlDataContractSerializerFormatters()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
@@ -67,6 +68,7 @@ namespace Microsoft.AspNetCore.Mvc.IntegrationTest
             AddHostingServices(serviceCollection);
             serviceCollection
                 .AddMvc()
+                .AddNewtonsoftJsonFormatters()
                 .AddXmlDataContractSerializerFormatters()
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
 

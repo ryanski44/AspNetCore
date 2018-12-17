@@ -30,7 +30,7 @@ namespace Microsoft.AspNetCore.Mvc.Formatters
             // Arrange
 #pragma warning disable CS0618
             var formatter = new JsonPatchInputFormatter(
-                GetLogger(), 
+                GetLogger(),
                 _serializerSettings,
                 ArrayPool<char>.Shared,
                 _objectPoolProvider);
@@ -120,10 +120,10 @@ namespace Microsoft.AspNetCore.Mvc.Formatters
             // Arrange
 #pragma warning disable CS0618
             var formatter = new JsonPatchInputFormatter(
-                GetLogger(), 
-                _serializerSettings, 
-                ArrayPool<char>.Shared, 
-                _objectPoolProvider, 
+                GetLogger(),
+                _serializerSettings,
+                ArrayPool<char>.Shared,
+                _objectPoolProvider,
                 suppressInputFormatterBuffering: true);
 #pragma warning restore CS0618
 
@@ -174,7 +174,7 @@ namespace Microsoft.AspNetCore.Mvc.Formatters
 
             var content = "[{\"op\":\"add\",\"path\":\"Customer/Name\",\"value\":\"John\"}]";
             var contentBytes = Encoding.UTF8.GetBytes(content);
-            
+
             var httpContext = new DefaultHttpContext();
             httpContext.Features.Set<IHttpResponseFeature>(new TestResponseFeature());
             httpContext.Request.Body = new NonSeekableReadStream(contentBytes);

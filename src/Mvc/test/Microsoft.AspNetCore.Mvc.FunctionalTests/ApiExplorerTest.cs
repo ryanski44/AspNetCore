@@ -575,7 +575,7 @@ namespace Microsoft.AspNetCore.Mvc.FunctionalTests
             // Arrange
             var type1 = typeof(ApiExplorerWebSite.Product).FullName;
             var type2 = typeof(SerializableError).FullName;
-            var expectedMediaTypes = new[] { "application/json", "text/json", "application/xml", "text/xml" };
+            var expectedMediaTypes = new[] { "application/json", "application/xml", "text/json", "text/xml" };
 
             // Act
             var response = await Client.GetAsync(
@@ -592,13 +592,13 @@ namespace Microsoft.AspNetCore.Mvc.FunctionalTests
             Assert.Equal(201, responseType.StatusCode);
             Assert.Equal(
                 expectedMediaTypes,
-                responseType.ResponseFormats.Select(responseFormat => responseFormat.MediaType).ToArray());
+                responseType.ResponseFormats.Select(responseFormat => responseFormat.MediaType).OrderBy(o => o).ToArray());
             responseType = description.SupportedResponseTypes[1];
             Assert.Equal(type2, responseType.ResponseType);
             Assert.Equal(400, responseType.StatusCode);
             Assert.Equal(
                 expectedMediaTypes,
-                responseType.ResponseFormats.Select(responseFormat => responseFormat.MediaType).ToArray());
+                responseType.ResponseFormats.Select(responseFormat => responseFormat.MediaType).OrderBy(o => o).ToArray());
         }
 
         [Fact]
@@ -639,7 +639,7 @@ namespace Microsoft.AspNetCore.Mvc.FunctionalTests
             // Arrange
             var type1 = typeof(ApiExplorerWebSite.Product).FullName;
             var type2 = typeof(SerializableError).FullName;
-            var expectedMediaTypes = new[] { "application/json", "text/json", "application/xml", "text/xml" };
+            var expectedMediaTypes = new[] { "application/json", "application/xml", "text/json", "text/xml" };
 
             // Act
             var response = await Client.GetAsync(
@@ -656,13 +656,13 @@ namespace Microsoft.AspNetCore.Mvc.FunctionalTests
             Assert.Equal(200, responseType.StatusCode);
             Assert.Equal(
                 expectedMediaTypes,
-                responseType.ResponseFormats.Select(responseFormat => responseFormat.MediaType).ToArray());
+                responseType.ResponseFormats.Select(responseFormat => responseFormat.MediaType).OrderBy(o => o).ToArray());
             responseType = description.SupportedResponseTypes[1];
             Assert.Equal(type2, responseType.ResponseType);
             Assert.Equal(400, responseType.StatusCode);
             Assert.Equal(
                 expectedMediaTypes,
-                responseType.ResponseFormats.Select(responseFormat => responseFormat.MediaType).ToArray());
+                responseType.ResponseFormats.Select(responseFormat => responseFormat.MediaType).OrderBy(o => o).ToArray());
         }
 
         [Fact]

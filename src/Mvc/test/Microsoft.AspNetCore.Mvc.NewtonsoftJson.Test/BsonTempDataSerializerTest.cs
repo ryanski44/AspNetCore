@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace Microsoft.AspNetCore.Mvc.ViewFeatures.Filters
+namespace Microsoft.AspNetCore.Mvc.NewtonsoftJson
 {
-    public class TempDataSerializerTest
+    public class BsonTempDataSerializerTest
     {
         public static TheoryData<object, Type> InvalidTypes
         {
@@ -29,14 +29,14 @@ namespace Microsoft.AspNetCore.Mvc.ViewFeatures.Filters
         public void EnsureObjectCanBeSerialized_ThrowsException_OnInvalidType(object value, Type type)
         {
             // Arrange
-            var testProvider = new TempDataSerializer();
+            var testProvider = new BsonTempDataSerializer();
 
             // Act & Assert
             var exception = Assert.Throws<InvalidOperationException>(() =>
             {
                 testProvider.EnsureObjectCanBeSerialized(value);
             });
-            Assert.Equal($"The '{typeof(TempDataSerializer).FullName}' cannot serialize " +
+            Assert.Equal($"The '{typeof(BsonTempDataSerializer).FullName}' cannot serialize " +
                 $"an object of type '{type}'.",
                 exception.Message);
         }
@@ -60,14 +60,14 @@ namespace Microsoft.AspNetCore.Mvc.ViewFeatures.Filters
         public void EnsureObjectCanBeSerialized_ThrowsException_OnInvalidDictionaryType(object value, Type type)
         {
             // Arrange
-            var testProvider = new TempDataSerializer();
+            var testProvider = new BsonTempDataSerializer();
 
             // Act & Assert
             var exception = Assert.Throws<InvalidOperationException>(() =>
             {
                 testProvider.EnsureObjectCanBeSerialized(value);
             });
-            Assert.Equal($"The '{typeof(TempDataSerializer).FullName}' cannot serialize a dictionary " +
+            Assert.Equal($"The '{typeof(BsonTempDataSerializer).FullName}' cannot serialize a dictionary " +
                 $"with a key of type '{type}'. The key must be of type 'System.String'.",
                 exception.Message);
         }
@@ -98,7 +98,7 @@ namespace Microsoft.AspNetCore.Mvc.ViewFeatures.Filters
         public void EnsureObjectCanBeSerialized_DoesNotThrow_OnValidType(object value)
         {
             // Arrange
-            var testProvider = new TempDataSerializer();
+            var testProvider = new BsonTempDataSerializer();
 
             // Act & Assert (Does not throw)
             testProvider.EnsureObjectCanBeSerialized(value);
@@ -108,7 +108,7 @@ namespace Microsoft.AspNetCore.Mvc.ViewFeatures.Filters
         public void DeserializeTempData_ReturnsEmptyDictionary_DataIsEmpty()
         {
             // Arrange
-            var serializer = new TempDataSerializer();
+            var serializer = new BsonTempDataSerializer();
 
             // Act
             var tempDataDictionary = serializer.Deserialize(new byte[0]);
@@ -123,7 +123,7 @@ namespace Microsoft.AspNetCore.Mvc.ViewFeatures.Filters
         {
             // Arrange
             var key = "NullKey";
-            var testProvider = new TempDataSerializer();
+            var testProvider = new BsonTempDataSerializer();
             var input = new Dictionary<string, object>
              {
                  { key, null }

@@ -15,4 +15,8 @@
 
     <PackageReference Include="Microsoft.Extensions.Logging" Version="$(MicrosoftExtensionsLoggingPackageVersion)" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="IntegrationTest\" />
+  </ItemGroup>
 </Project>

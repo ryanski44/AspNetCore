@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Cors;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.Formatters.Json;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Razor.Compilation;
@@ -234,23 +233,6 @@ namespace Microsoft.AspNetCore.Mvc
         }
 
         [Fact]
-        public void AddMvcCore_AddsMvcJsonOption()
-        {
-            // Arrange
-            var services = new ServiceCollection();
-
-            // Act
-            services.AddMvcCore()
-                .AddJsonOptions((options) =>
-                {
-                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                });
-
-            // Assert
-            Assert.Single(services, d => d.ServiceType == typeof(IConfigureOptions<MvcJsonOptions>));
-        }
-
-        [Fact]
         public void AddMvc_NoScopedServiceIsReferredToByASingleton()
         {
             // Arrange
@@ -339,7 +321,6 @@ namespace Microsoft.AspNetCore.Mvc
                         {
                             typeof(MvcCoreMvcOptionsSetup),
                             typeof(MvcDataAnnotationsMvcOptionsSetup),
-                            typeof(MvcJsonMvcOptionsSetup),
                             typeof(TempDataMvcOptionsSetup),
                         }
                     },
@@ -387,13 +368,6 @@ namespace Microsoft.AspNetCore.Mvc
                         new[]
                         {
                             typeof(RazorPagesOptionsConfigureCompatibilityOptions),
-                        }
-                    },
-                    {
-                        typeof(IPostConfigureOptions<MvcJsonOptions>),
-                        new[]
-                        {
-                            typeof(MvcJsonOptionsConfigureCompatibilityOptions),
                         }
                     },
                     {
@@ -451,7 +425,6 @@ namespace Microsoft.AspNetCore.Mvc
                         new Type[]
                         {
                             typeof(DefaultApiDescriptionProvider),
-                            typeof(JsonPatchOperationsArrayProvider),
                         }
                     },
                     {

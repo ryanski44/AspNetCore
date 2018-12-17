@@ -19,6 +19,7 @@ namespace FormatterWebSite
 
                 options.InputFormatters.Add(new StringInputFormatter());
             })
+            .AddNewtonsoftJsonFormatters()
             .AddXmlDataContractSerializerFormatters()
             .SetCompatibilityVersion(CompatibilityVersion.Latest);
 

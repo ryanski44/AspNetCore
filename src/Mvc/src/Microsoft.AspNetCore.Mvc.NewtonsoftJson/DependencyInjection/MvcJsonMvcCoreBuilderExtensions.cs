@@ -2,10 +2,14 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Buffers;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.AspNetCore.Mvc.Formatters.Json;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Infrastructure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -14,20 +18,20 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class MvcJsonMvcCoreBuilderExtensions
     {
-        public static IMvcCoreBuilder AddJsonFormatters(this IMvcCoreBuilder builder)
+        public static IMvcCoreBuilder AddNewtonsoftJsonFormatters(this IMvcCoreBuilder builder)
         {
             if (builder == null)
             {
                 throw new ArgumentNullException(nameof(builder));
             }
 
-            AddJsonFormatterServices(builder.Services);
+            AddServicesCore(builder.Services);
             return builder;
         }
 
-        public static IMvcCoreBuilder AddJsonFormatters(
+        public static IMvcCoreBuilder AddNewtonsoftJsonFormatters(
             this IMvcCoreBuilder builder,
-            Action<JsonSerializerSettings> setupAction)
+            Action<MvcJsonOptions> setupAction)
         {
             if (builder == null)
             {
@@ -39,9 +43,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(setupAction));
             }
 
-            AddJsonFormatterServices(builder.Services);
+            AddServicesCore(builder.Services);
 
-            builder.Services.Configure<MvcJsonOptions>((options) => setupAction(options.SerializerSettings));
+            builder.Services.Configure(setupAction);
 
             return builder;
         }
@@ -52,7 +56,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="builder">The <see cref="IMvcCoreBuilder"/>.</param>
         /// <param name="setupAction">The <see cref="MvcJsonOptions"/> which need to be configured.</param>
         /// <returns>The <see cref="IMvcCoreBuilder"/>.</returns>
-        public static IMvcCoreBuilder AddJsonOptions(
+        public static IMvcCoreBuilder AddNewtonsoftJsonOptions(
            this IMvcCoreBuilder builder,
            Action<MvcJsonOptions> setupAction)
         {
@@ -71,7 +75,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         // Internal for testing.
-        internal static void AddJsonFormatterServices(IServiceCollection services)
+        internal static void AddServicesCore(IServiceCollection services)
         {
             services.TryAddEnumerable(
                 ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, MvcJsonMvcOptionsSetup>());
@@ -80,6 +84,30 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddEnumerable(
                 ServiceDescriptor.Transient<IApiDescriptionProvider, JsonPatchOperationsArrayProvider>());
             services.TryAddSingleton<JsonResultExecutor>();
+
+            var tempDataSerializer = services.FirstOrDefault(f => f.ServiceType == typeof(TempDataSerializer));
+            if (tempDataSerializer != null)
+            {
+                services.Remove(tempDataSerializer);
+            }
+            services.TryAddSingleton<TempDataSerializer, BsonTempDataSerializer>();
+
+            //
+            // JSON Helper
+            //
+            var jsonHelper = services.FirstOrDefault(f => f.ServiceType == typeof(IJsonHelper));
+            if (jsonHelper != null)
+            {
+                services.Remove(jsonHelper);
+            }
+
+            services.TryAddSingleton<IJsonHelper, JsonHelper>();
+            services.TryAdd(ServiceDescriptor.Singleton(serviceProvider =>
+            {
+                var options = serviceProvider.GetRequiredService<IOptions<MvcJsonOptions>>().Value;
+                var charPool = serviceProvider.GetRequiredService<ArrayPool<char>>();
+                return new JsonOutputFormatter(options.SerializerSettings, charPool);
+            }));
         }
     }
 }

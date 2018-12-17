@@ -9,21 +9,22 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Infrastructure;
 using Microsoft.Extensions.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.AspNetCore.Mvc.ViewFeatures.Filters
+namespace Microsoft.AspNetCore.Mvc.NewtonsoftJson
 {
-    internal class TempDataSerializer
+    internal class BsonTempDataSerializer : TempDataSerializer
     {
         private readonly JsonSerializer _jsonSerializer =
             JsonSerializer.Create(JsonSerializerSettingsProvider.CreateSerializerSettings());
 
-        private static readonly MethodInfo _convertArrayMethodInfo = typeof(TempDataSerializer).GetMethod(
+        private static readonly MethodInfo _convertArrayMethodInfo = typeof(BsonTempDataSerializer).GetMethod(
             nameof(ConvertArray), BindingFlags.Static | BindingFlags.NonPublic);
-        private static readonly MethodInfo _convertDictionaryMethodInfo = typeof(TempDataSerializer).GetMethod(
+        private static readonly MethodInfo _convertDictionaryMethodInfo = typeof(BsonTempDataSerializer).GetMethod(
             nameof(ConvertDictionary), BindingFlags.Static | BindingFlags.NonPublic);
 
         private static readonly ConcurrentDictionary<Type, Func<JArray, object>> _arrayConverters =
@@ -43,7 +44,7 @@ namespace Microsoft.AspNetCore.Mvc.ViewFeatures.Filters
             { JTokenType.Uri, typeof(Uri) },
         };
 
-        public IDictionary<string, object> Deserialize(byte[] value)
+        public override IDictionary<string, object> Deserialize(byte[] value)
         {
             Dictionary<string, object> tempDataDictionary;
 
@@ -124,7 +125,7 @@ namespace Microsoft.AspNetCore.Mvc.ViewFeatures.Filters
             return convertedDictionary;
         }
 
-        public byte[] Serialize(IDictionary<string, object> values)
+        public override byte[] Serialize(IDictionary<string, object> values)
         {
             var hasValues = (values != null && values.Count > 0);
             if (hasValues)
@@ -165,7 +166,7 @@ namespace Microsoft.AspNetCore.Mvc.ViewFeatures.Filters
             }
         }
 
-        public static bool CanSerializeType(Type typeToSerialize, out string errorMessage)
+        private static bool CanSerializeType(Type typeToSerialize, out string errorMessage)
         {
             typeToSerialize = typeToSerialize ?? throw new ArgumentNullException(nameof(typeToSerialize));
 
@@ -195,7 +196,7 @@ namespace Microsoft.AspNetCore.Mvc.ViewFeatures.Filters
                     if (genericTypeArguments[0] != typeof(string))
                     {
                         errorMessage = Resources.FormatTempData_CannotSerializeDictionary(
-                            typeof(TempDataSerializer).FullName,
+                            typeof(BsonTempDataSerializer).FullName,
                             genericTypeArguments[0],
                             typeof(string).FullName);
                         return false;
@@ -211,7 +212,7 @@ namespace Microsoft.AspNetCore.Mvc.ViewFeatures.Filters
             if (!IsSimpleType(actualType))
             {
                 errorMessage = Resources.FormatTempData_CannotSerializeType(
-                    typeof(TempDataSerializer).FullName,
+                    typeof(BsonTempDataSerializer).FullName,
                     actualType);
                 return false;
             }

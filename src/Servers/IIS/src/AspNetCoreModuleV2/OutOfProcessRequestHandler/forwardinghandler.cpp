@@ -233,7 +233,7 @@ FORWARDING_HANDLER::ExecuteRequestHandler()
     PCSTR pszContentLength = pRequest->GetHeader(HttpHeaderContentLength);
     if (pszContentLength != NULL)
     {
-        m_BytesToReceive = atol(pszContentLength);
+        m_BytesToReceive = atoll(pszContentLength);
         
         //only set cbContentLength which gets used for the dwTotalLength parameter in WinHttpSendRequest if the value fits in an unsigned 32 bit int
         //If it is greater than the max value of a 32 bit unsigned integer WinHttpSendRequest will get the value from the content length header and we should send WINHTTP_IGNORE_REQUEST_TOTAL_LENGTH
@@ -1658,6 +1658,7 @@ FORWARDING_HANDLER::OnWinHttpCompletionSendRequestOrWriteComplete(
                 NULL,
                 NULL);
         }
+
         hr = pRequest->ReadEntityBody(
             m_pEntityBuffer + 6,
             (DWORD)(min(m_BytesToReceive, (ULONGLONG)BUFFER_SIZE)),
